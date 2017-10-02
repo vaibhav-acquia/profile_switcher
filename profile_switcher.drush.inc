@@ -2,6 +2,7 @@
 /**
  * @file Contains the code for the profile_switcher drush commands.
  */
+
 /**
  * Implements hook_drush_command().
  */
@@ -20,23 +21,19 @@ function profile_switcher_drush_command() {
 }
 
 /**
- * Call back function drush_custom_drush_command_()
+ * Call back function drush_custom_drush_command_().
+ *
+ * @param string $profile_to_install
+ *
  */
-function drush_profile_switcher_switch_profile($profile_name = '', $profile_to_remove = '') {
+function drush_profile_switcher_switch_profile($profile_to_install = '') {
+  drush_print('Current profile: ' . \Drupal::installProfile());
 
-  $extension_config = \Drupal::configFactory()->getEditable('core.extension');
-  $profile = $extension_config->get('profile');
-  $profile_name = strVal($profile_name);
+  drush_print('Switching profile to ' . $profile_to_install . ' !');
+  \Drupal::configFactory()->getEditable('core.extension')
+    ->set('profile', $profile_to_install)
+    ->save();
+  drupal_flush_all_caches();
 
-  if ($profile_to_remove === $profile || $profile_to_remove === '') {
-    drush_print('Removing ' . $profile_to_remove . '.');
-
-    drush_print('Switching to ' . $profile_name . '.');
-
-    $extension_config->set('profile', $profile_name);
-    $extension_config->save();
-    drupal_flush_all_caches();
-  } else {
-    drush_print('Trying to switch from wrong profile. Current profile: ' . $profile);
-  }
+  drush_print('Profile changed to: ' . \Drupal::installProfile());
 }
