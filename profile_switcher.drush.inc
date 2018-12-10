@@ -27,7 +27,15 @@ function profile_switcher_drush_command() {
  *
  */
 function drush_profile_switcher_switch_profile($profile_to_install = '') {
-  drush_print('Current profile: ' . \Drupal::installProfile());
+  $profile_to_remove = \Drupal::installProfile();
+
+  drush_print(dt("The site's install profile will be switched from !profile_to_remove to !profile_to_install.", [
+    '!profile_to_remove' => $profile_to_remove,
+    '!profile_to_install' => $profile_to_install,
+  ]));
+  if (!drush_confirm(dt('Do you want to continue?'))) {
+    return drush_user_abort();
+  }
 
   \Drupal::service('profile_switcher.profile_switcher')->switchProfile($profile_to_install);
 

@@ -3,6 +3,7 @@
 namespace Drupal\profile_switcher\Commands;
 
 use Drush\Commands\DrushCommands;
+use Drush\Exceptions\UserAbortException;
 
 /**
  * A Drush commandfile for Profile Switcher module.
@@ -21,8 +22,13 @@ class ProfileSwitcherCommands extends DrushCommands {
   public function profile($profile_to_install) {
     $profile_to_remove = \Drupal::installProfile();
 
-    $this->output()->writeln('Current profile: ' . $profile_to_remove);
-    $this->output()->writeln('Switching profile to ' . $profile_to_install . '!');
+    $this->output()->writeln(dt("The site's install profile will be switched from !profile_to_remove to !profile_to_install.", [
+      '!profile_to_remove' => $profile_to_remove,
+      '!profile_to_install' => $profile_to_install,
+    ]));
+    if (!$this->io()->confirm(dt('Do you want to continue?'))) {
+      throw new UserAbortException();
+    }
 
     \Drupal::service('profile_switcher.profile_switcher')->switchProfile($profile_to_install);
 
