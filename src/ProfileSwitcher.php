@@ -54,6 +54,8 @@ class ProfileSwitcher {
    *   The machine name of the profile to switch to.
    */
   public function switchProfile($profile_to_install) {
+    $profile_to_remove = \Drupal::installProfile();
+
     // Set the profile in configuration.
     $extension_config = $this->configFactory->getEditable('core.extension');
     $extension_config->set('profile', $profile_to_install)
