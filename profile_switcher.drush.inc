@@ -29,11 +29,7 @@ function profile_switcher_drush_command() {
 function drush_profile_switcher_switch_profile($profile_to_install = '') {
   drush_print('Current profile: ' . \Drupal::installProfile());
 
-  drush_print('Switching profile to ' . $profile_to_install . ' !');
-  \Drupal::configFactory()->getEditable('core.extension')
-    ->set('profile', $profile_to_install)
-    ->save();
-  drupal_flush_all_caches();
+  \Drupal::service('profile_switcher.profile_switcher')->switchProfile($profile_to_install);
 
   drush_print('Profile changed to: ' . \Drupal::installProfile());
 }
