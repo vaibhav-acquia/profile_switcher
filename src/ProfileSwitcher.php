@@ -4,6 +4,7 @@ namespace Drupal\profile_switcher;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\KeyValueStore\KeyValueFactoryInterface;
+use Drupal\Core\State\StateInterface;
 
 /**
  * Switches the site's install profile.
@@ -27,6 +28,13 @@ class ProfileSwitcher {
   protected $keyvalue;
 
   /**
+   * The State service.
+   *
+   * @var \Drupal\Core\State\StateInterface
+   */
+  protected $state;
+
+  /**
    * Creates a ProfileSwitcher instance.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -36,10 +44,12 @@ class ProfileSwitcher {
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,
-    KeyValueFactoryInterface $keyvalue
+    KeyValueFactoryInterface $keyvalue,
+    StateInterface $state
   ) {
     $this->configFactory = $config_factory;
     $this->keyvalue = $keyvalue;
+    $this->state = $state;
   }
 
   /**
@@ -55,6 +65,9 @@ class ProfileSwitcher {
    */
   public function switchProfile($profile_to_install) {
     $profile_to_remove = \Drupal::installProfile();
+
+    // Forces ExtensionDiscovery to rerun for profiles.
+    $this->state->delete('system.profile.files');
 
     // Set the profile in configuration.
     $extension_config = $this->configFactory->getEditable('core.extension');
