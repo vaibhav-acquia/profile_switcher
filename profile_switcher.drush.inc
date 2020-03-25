@@ -12,7 +12,6 @@ function profile_switcher_drush_command() {
     'description' => 'Switch Drupal profile in a installed site',
     'arguments' => [
       'profile_name' => 'The profile to activate',
-      'profile_to_delete' => 'The profile to disable',
     ],
     'drupal dependencies' => ['profile_switcher'],
     'aliases' => ['switch:profile'],
