@@ -41,6 +41,8 @@ class ProfileSwitcher {
    *   The configuration factory.
    * @param \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $keyvalue
    *   The Key Value Factory service.
+   * @param \Drupal\Core\State\StateInterface $state
+   *   The State service.
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,

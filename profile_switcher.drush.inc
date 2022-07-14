@@ -1,13 +1,15 @@
 <?php
+
 /**
- * @file Contains the code for the profile_switcher drush commands.
+ * @file
+ * Contains the code for the profile_switcher drush commands.
  */
 
 /**
  * Implements hook_drush_command().
  */
 function profile_switcher_drush_command() {
-  $items = array();
+  $items = [];
   $items['switch-profile'] = [
     'description' => 'Switch Drupal profile in a installed site',
     'arguments' => [
@@ -23,7 +25,7 @@ function profile_switcher_drush_command() {
  * Call back function drush_custom_drush_command_().
  *
  * @param string $profile_to_install
- *
+ *   The profile to install.
  */
 function drush_profile_switcher_switch_profile($profile_to_install = '') {
   $profile_to_remove = \Drupal::installProfile();
