@@ -1,5 +1,5 @@
 name: 'Profile switcher'
 description: "Changes the site's installation profile via Drush"
 type: module
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^8.8 || ^9 || ^10
 dependencies:
